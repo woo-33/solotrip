@@ -723,8 +723,9 @@ details.day::after{content:"";display:block;height:6px}.day>summary{cursor:point
      save();refreshTotal()});
    box.addEventListener('change',e=>{const j=idx(e);if(j>=0&&e.target.classList.contains('ec')){S.exp[i][j].c=e.target.value;save();refreshTotal()}});
    box.addEventListener('click',e=>{
-     if(e.target.classList.contains('add')){(S.exp[i]=S.exp[i]||[]).push({c:'餐飲',a:'',n:''});save();renderExp(i)}
-     else if(e.target.classList.contains('ed')){const j=idx(e);if(j>=0){S.exp[i].splice(j,1);save();renderExp(i);refreshTotal()}}});
+     e.stopPropagation();
+     if(e.target.classList.contains('add')){e.preventDefault();(S.exp[i]=S.exp[i]||[]).push({c:'餐飲',a:'',n:''});save();renderExp(i)}
+     else if(e.target.classList.contains('ed')){e.preventDefault();const j=idx(e);if(j>=0){S.exp[i].splice(j,1);save();renderExp(i);refreshTotal()}}});
    renderExp(i);
  });
  if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
