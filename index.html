@@ -54,7 +54,7 @@ textarea:focus,input:focus{border-color:var(--indigo);box-shadow:0 0 0 2px rgba(
 .booking b{display:block;font-size:13px}
 .m{display:block;font-size:11px;color:var(--muted);line-height:1.4}
 .bookbody{padding:0 12px 13px 40px;border-top:1px solid var(--line)}
-.bookbody input{margin-bottom:0}.booking b[data-bookname]{outline:0;border-radius:5px}.booking b[data-bookname]:focus{background:var(--paper);box-shadow:0 0 0 2px rgba(35,59,85,.12);padding:1px 3px}.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.flight-grid>div{border:1px solid var(--line);border-radius:10px;padding:7px;background:var(--paper)}.flight-grid b{display:block;color:var(--red);font-size:12px;margin-bottom:4px}.flight-grid .seg-title{outline:0;border-radius:5px;cursor:text}.flight-grid .seg-title:focus{background:var(--white);box-shadow:0 0 0 2px rgba(35,59,85,.12);padding:1px 3px}.flight-grid textarea{margin-top:5px}.flight-grid input{font-size:12px}
+.bookbody input{margin-bottom:0}.booking b[data-bookname]{outline:0;border-radius:5px;cursor:text}.editable-book-title{display:block}.flight-booking b[data-flight-name]{display:block;outline:0;border-radius:5px;cursor:text}.flight-booking b[data-flight-name]:focus{background:var(--paper);box-shadow:0 0 0 2px rgba(35,59,85,.12);padding:1px 3px}.booking b[data-bookname]:focus{background:var(--paper);box-shadow:0 0 0 2px rgba(35,59,85,.12);padding:1px 3px}.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.flight-grid>div{border:1px solid var(--line);border-radius:10px;padding:7px;background:var(--paper)}.flight-segment{min-width:0}.flight-grid b{display:block;color:var(--red);font-size:12px;margin-bottom:4px}.flight-grid .seg-title{outline:0;border-radius:5px;cursor:text}.flight-grid .seg-title:focus{background:var(--white);box-shadow:0 0 0 2px rgba(35,59,85,.12);padding:1px 3px}.flight-grid textarea{margin-top:5px}.flight-grid input{font-size:12px}.flight-mini{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px}.flight-mini label{margin:0 0 2px!important;color:var(--muted);font-size:10px}.flight-mini input{margin:0!important;font-size:11px!important;padding:5px 6px!important}
 .original-tip{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.45;padding:7px 8px;background:var(--paper2);border-radius:8px}
 .section-title{font-size:15px;font-weight:850;color:var(--indigo);margin:18px 2px 9px}
 .footer{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(244,240,229,.96);border-top:1px solid var(--line);padding:7px 12px calc(7px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--muted);font-size:10px}
@@ -505,12 +505,12 @@ details.day::after{content:"";display:block;height:6px}.day>summary{cursor:point
 <section id="booking">
   <div class="section-title">預訂清單</div>
   
-<details class="card booking">
+<details class="card booking flight-booking">
   <summary>
     <span class="check"></span>
     <span>
-      <b data-show="book0" data-bookname="0" contenteditable="true">機票（廣州⇄呼和浩特/太原）</b>
-      <span class="m">提前2–6週｜航空App/攜程</span>
+      <b data-show="book0" data-bookname="0" contenteditable="true" title="點擊編輯機票預訂標題" aria-label="機票預訂標題，可直接編輯">機票（去程／回程）</b>
+      <span class="m">提前2–6週｜航空App／攜程</span>
       <span class="binfo" data-bi="0"></span>
     </span>
     <span class="arrow">⌄</span>
@@ -518,10 +518,18 @@ details.day::after{content:"";display:block;height:6px}.day>summary{cursor:point
   <div class="bookbody">
     <label>去程／回程</label>
     <div class="flight-grid">
-      <div><b>去程</b><input type="text" data-k="booktime0out" placeholder="日期／時間"><textarea data-k="booknote0out" placeholder="備註"></textarea></div>
-      <div><b>回程</b><input type="text" data-k="booktime0back" placeholder="日期／時間"><textarea data-k="booknote0back" placeholder="備註"></textarea></div>
+      <div class="flight-segment" data-flight-card="out">
+        <b class="seg-title" data-flight-name="out" contenteditable="true" title="點擊編輯去程標題" aria-label="去程標題，可直接編輯">機票・去程（廣州→呼和浩特）</b>
+        <input type="text" data-k="booktime0out" data-flight-part="out" placeholder="日期／時間">
+        <textarea data-k="booknote0out" placeholder="備註"></textarea>
+      </div>
+      <div class="flight-segment" data-flight-card="back">
+        <b class="seg-title" data-flight-name="back" contenteditable="true" title="點擊編輯回程標題" aria-label="回程標題，可直接編輯">機票・回程（太原→廣州）</b>
+        <input type="text" data-k="booktime0back" data-flight-part="back" placeholder="日期／時間">
+        <textarea data-k="booknote0back" placeholder="備註"></textarea>
+      </div>
     </div>
-    <div class="original-tip">核對去回程航班、行李額、航站樓</div>
+    <div class="original-tip">去程：廣州 → 呼和浩特；回程：太原 → 廣州；分別核對航班、行李額、航站樓</div>
   </div>
 </details>
 <details class="card booking">
@@ -740,15 +748,17 @@ details.day::after{content:"";display:block;height:6px}.day>summary{cursor:point
  for(let i=0;i<10;i++) syncDay(i);
  const DEFAULT_LK=[[0], [2], [3], [1], [], [4], [5], [1], [7, 6], [0]],BN=["機票（廣州⇄呼和浩特/太原）", "高鐵 呼→同、同→太", "內蒙古博物院", "草原一日團", "雲岡石窟", "懸空寺", "晉祠博物館", "山西博物院", "證件與健康"];
  function getBookName(i){return String(S['bookname'+i]!==undefined?S['bookname'+i]:BN[i]).trim()||BN[i]}
+ function getFlightTitle(part){const d=part==='back'?'機票・回程（太原→廣州）':'機票・去程（廣州→呼和浩特）';return String(S['flightname'+part]!==undefined?S['flightname'+part]:d).trim()||d}
  function getBookTime(i){
-   if(i===0||i===1){const suffix=i===0?['out','back']:['a','b'];const vals=suffix.map(x=>(document.querySelector('[data-k="booktime'+i+x+'"]')||{}).value||'');const labels=i===0?['去程','回程']:['呼和浩特→大同','大同→太原'];const joined=vals.map((v,j)=>v?labels[j]+'：'+v:'').filter(Boolean).join('；');return joined||((document.querySelector('[data-k="booktime'+i+'"]')||{}).value||'')}return (document.querySelector('[data-k="booktime'+i+'"]')||{}).value||''}
+   if(i===0||i===1){const suffix=i===0?['out','back']:['a','b'];const vals=suffix.map(x=>(document.querySelector('[data-k="booktime'+i+x+'"]')||{}).value||'');const labels=i===0?['去程','回程']:['呼和浩特→大同','大同→太原'];return vals.map((v,j)=>v?labels[j]+'：'+v:'').filter(Boolean).join('；')}return (document.querySelector('[data-k="booktime'+i+'"]')||{}).value||''}
  function getBookNote(i){
-   if(i===0||i===1){const suffix=i===0?['out','back']:['a','b'];const vals=suffix.map(x=>(document.querySelector('[data-k="booknote'+i+x+'"]')||{}).value||'');const labels=i===0?['去程','回程']:['呼和浩特→大同','大同→太原'];const joined=vals.map((v,j)=>v?labels[j]+'：'+v:'').filter(Boolean).join('；');return joined||((document.querySelector('[data-k="booknote'+i+'"]')||{}).value||'')}return (document.querySelector('[data-k="booknote'+i+'"]')||{}).value||''}
+   if(i===0||i===1){const suffix=i===0?['out','back']:['a','b'];const vals=suffix.map(x=>(document.querySelector('[data-k="booknote'+i+x+'"]')||{}).value||'');const labels=i===0?['去程','回程']:['呼和浩特→大同','大同→太原'];return vals.map((v,j)=>v?labels[j]+'：'+v:'').filter(Boolean).join('；')}return (document.querySelector('[data-k="booknote'+i+'"]')||{}).value||''}
  // 相容舊版合併機票欄位：舊資料先放到去程，避免更新後遺失。
  if(S.booktime0&&!S.booktime0out){const e=document.querySelector('[data-k="booktime0out"]');if(e)e.value=S.booktime0}
  if(S.booknote0&&!S.booknote0out){const e=document.querySelector('[data-k="booknote0out"]');if(e)e.value=S.booknote0}
  if(S.booktime1&&!S.booktime1a){const e=document.querySelector('[data-k="booktime1a"]');if(e)e.value=S.booktime1}
  if(S.booknote1&&!S.booknote1a){const e=document.querySelector('[data-k="booknote1a"]');if(e)e.value=S.booknote1}
+ function syncFlightCards(){['out','back'].forEach(part=>{const time=(document.querySelector('[data-k="booktime0'+part+'"]')||{}).value||'',note=(document.querySelector('[data-k="booknote0'+part+'"]')||{}).value||'',card=document.querySelector('[data-flight-card="'+part+'"]'),info=card&&card.querySelector('[data-flight-info="'+part+'"]'),title=card&&card.querySelector('[data-flight-name="'+part+'"]');if(title)title.textContent=getFlightTitle(part);if(info){let h='';if(time.trim())h+='<i>📅 '+esc2(time.trim())+'</i>';if(note.trim())h+=(h?'　':'')+'<em>'+esc2(note.trim().split('\n')[0])+'</em>';info.innerHTML=h;info.classList.toggle('on',!!h);card.querySelector('.check')&&card.querySelector('.check').classList.toggle('ok',!!time.trim())}})}
  function syncBook(i){
    i=String(i);const n=Number(i),t=getBookTime(n),nt=getBookNote(n),el=document.querySelector('[data-bi="'+i+'"]');
    document.querySelectorAll('[data-bookname="'+i+'"]').forEach(x=>{if(x.textContent!==getBookName(n))x.textContent=getBookName(n)});
@@ -764,7 +774,7 @@ details.day::after{content:"";display:block;height:6px}.day>summary{cursor:point
      const k=el.dataset.k;S[k]=el.value;save();
      document.querySelectorAll('[data-k="'+k+'"]').forEach(o=>{if(o!==el){o.value=el.value;if(o.tagName==='TEXTAREA'&&o.offsetParent!==null){o.rows=1;o.style.height='auto';o.style.height=(o.scrollHeight+2)+'px'}}});
      document.querySelectorAll('[data-show="'+k+'"]').forEach(x=>x.textContent=el.value);
-     const bm=k.match(/^book(?:time|note)(\d+)(?:out|back|a|b)?$/);if(bm){syncBook(bm[1]);syncDayBook()}
+     const bm=k.match(/^book(?:time|note)(\d+)(?:out|back|a|b)?$/);if(bm){syncBook(bm[1]);syncFlightCards();syncDayBook()}
    });
  });
 
@@ -820,7 +830,7 @@ details.day::after{content:"";display:block;height:6px}.day>summary{cursor:point
  document.querySelectorAll('[data-show]').forEach(x=>{const e=document.querySelector('[data-k="'+x.dataset.show+'"]');if(e)x.textContent=e.value});
    S.dayBookings=Array.isArray(S.dayBookings)&&S.dayBookings.length===10?S.dayBookings:DEFAULT_LK.map(a=>a.slice());
    const LK=S.dayBookings;
- function syncDayBook(){LK.forEach((arr,i)=>{const day=document.getElementById('day'+i),el=day&&day.querySelector('[data-dbook]');if(!day||!el)return;const body=day.querySelector('.body'),label=[...body.querySelectorAll('label')].find(x=>x.textContent.includes('預約'));let links=[...day.querySelectorAll('.lk')];while(links.length<arr.length){const lk=document.createElement('div');lk.className='lk';lk.innerHTML='<b></b><input type="text" placeholder="日期／時間">';(label?label.nextElementSibling:body.firstElementChild).before(lk);links=[...day.querySelectorAll('.lk')];const input=lk.querySelector('input');input.addEventListener('input',()=>{S[input.dataset.k]=input.value;save();syncBook(input.dataset.k.replace('booktime',''));syncDayBook()})}links.forEach((lk,j)=>{const b=arr[j];if(b===undefined){lk.hidden=true;return}lk.hidden=false;lk.dataset.bookId=b;const title=lk.querySelector('b');if(title)title.textContent='🎫 '+getBookName(b);const input=lk.querySelector('input');if(input){input.dataset.k='booktime'+b;input.value=getBookTime(b)}});const h=arr.map(b=>{const t=getBookTime(b);return t?'🎫 '+esc2(getBookName(b))+' '+esc2(t):''}).filter(Boolean).join('　');el.innerHTML=h;el.classList.toggle('on',!!h)})}
+ function syncDayBook(){LK.forEach((arr,i)=>{const day=document.getElementById('day'+i),el=day&&day.querySelector('[data-dbook]');if(!day||!el)return;const body=day.querySelector('.body'),label=[...body.querySelectorAll('label')].find(x=>x.textContent.includes('預約'));let links=[...day.querySelectorAll('.lk')];while(links.length<arr.length){const lk=document.createElement('div');lk.className='lk';lk.innerHTML='<b></b><input type="text" placeholder="日期／時間">';(label?label.nextElementSibling:body.firstElementChild).before(lk);links=[...day.querySelectorAll('.lk')];const input=lk.querySelector('input');input.addEventListener('input',()=>{S[input.dataset.k]=input.value;save();syncBook(input.dataset.k.replace('booktime',''));syncDayBook()})}links.forEach((lk,j)=>{const b=arr[j];if(b===undefined){lk.hidden=true;return}lk.hidden=false;lk.dataset.bookId=b;if(b===0){const part=i===9?'back':'out',name=part==='out'?'去程':'回程',key='booktime0'+part;if(lk.dataset.flightPart!==part){lk.innerHTML='<b>🎫 '+getFlightTitle(part)+'</b><div class="flight-mini"><div><label>'+name+'</label><input type="text" data-k="'+key+'" data-flight-part="'+part+'" placeholder="日期／時間"></div></div>';lk.dataset.flightPart=part;lk.querySelector('input').addEventListener('input',()=>{S[key]=lk.querySelector('input').value;save();syncBook(0);syncDayBook()})}lk.querySelector('[data-k="'+key+'"]').value=S[key]||''}else{const title=lk.querySelector('b');if(title)title.textContent='🎫 '+getBookName(b);const input=lk.querySelector('input');if(input){input.dataset.k='booktime'+b;input.value=getBookTime(b)}}});const flightPart=i===9?'back':'out';const h=arr.map(b=>{let t=getBookTime(b);if(b===0){const key='booktime0'+flightPart;t=S[key]||'';if(t)return '🎫 '+esc2(getFlightTitle(flightPart))+' '+esc2(t);return ''}return t?'🎫 '+esc2(getBookName(b))+' '+esc2(t):''}).filter(Boolean).join('　');el.innerHTML=h;el.classList.toggle('on',!!h)})}
  syncDayBook();
  // 日期固定，只交換每日的內容與預訂關聯；日期欄位不會被移動。
  const CONTENT_FIELDS=['title','plan','hotel','ticket','transport','food','warn','note'];
@@ -839,6 +849,8 @@ details.day::after{content:"";display:block;height:6px}.day>summary{cursor:point
  });
  // 填寫行程時，點擊行程卡片以外的頁面空白處，收合目前展開的日期卡片。
  document.querySelectorAll('[data-bookname]').forEach(el=>el.addEventListener('input',()=>{const i=el.dataset.bookname;S['bookname'+i]=el.textContent.trim();save();document.querySelectorAll('[data-bookname="'+i+'"]').forEach(x=>{if(x!==el)x.textContent=S['bookname'+i]});syncDayBook()}));
+ document.querySelectorAll('[data-flight-name]').forEach(el=>{const part=el.dataset.flightName;if(S['flightname'+part]!==undefined)el.textContent=S['flightname'+part];el.addEventListener('input',()=>{S['flightname'+part]=el.textContent.trim();save();syncFlightCards();syncDayBook()})});
+ syncFlightCards();
  document.querySelectorAll('[data-segname]').forEach(el=>{const k='segname'+el.dataset.segname;if(S[k]!==undefined)el.textContent=S[k];el.addEventListener('input',()=>{S[k]=el.textContent.trim();save()})});
  document.addEventListener('click',e=>{const day=e.target.closest('details.day');if(day){if(e.target.closest('input,textarea,select,button,.exp,.lk,[contenteditable="true"]'))return;if(e.target.closest('.body')){day.open=false}return}document.querySelectorAll('details.day[open]').forEach(day=>day.open=false)});
  const bk=document.getElementById('bk'),bkt=document.getElementById('bkt');
