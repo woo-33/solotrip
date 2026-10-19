@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#233b55"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="WOO行程"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-180.png"><title>呼和浩特・大同・太原行程</title>
+<style>
+:root{
+ --paper:#f4f0e5;--paper2:#ebe4d4;--ink:#202b35;--muted:#6e756f;
+ --indigo:#233b55;--red:#a63b32;--mustard:#c69a3b;--line:#d7cfbe;--white:#faf8f1
+}
+*{box-sizing:border-box}
+html{background:var(--paper);scroll-behavior:smooth;scroll-padding-top:150px}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif}
+header{position:sticky;top:0;z-index:20;background:rgba(244,240,229,.96);backdrop-filter:blur(12px);padding:14px 15px 11px;border-bottom:1px solid var(--line);overflow:hidden}
+header:after{content:"";position:absolute;left:0;right:0;bottom:0;height:7px;background:linear-gradient(135deg,var(--indigo) 25%,transparent 25%) -7px 0,linear-gradient(225deg,var(--indigo) 25%,transparent 25%) -7px 0;background-size:14px 14px;pointer-events:none}
+.brand{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px;position:relative;z-index:1}
+.titlearea{min-width:0;flex:1}
+.edit-title{width:100%;border:0;background:transparent;outline:0;padding:0;margin:0;color:var(--ink);font:850 20px/1.2 -apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif}
+.subedit{width:100%;border:0;background:transparent;outline:0;padding:4px 0 0;color:var(--muted);font:10px/1.2 -apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;letter-spacing:.12em}
+.mark{width:44px;height:44px;flex:none;cursor:pointer;position:relative}
+.mark img,.mark .w{width:40px;height:40px;display:block;margin:auto;border-radius:12px;object-fit:contain;overflow:hidden}
+.mark .w{background:var(--indigo);color:#f7df91;display:grid;place-items:center;font-size:10px;font-weight:800}
+.mark input{display:none}
+nav{display:grid;grid-template-columns:1fr 1fr;gap:7px;position:relative;z-index:2}
+nav a{border:1px solid var(--line);background:rgba(250,248,241,.8);color:var(--muted);border-radius:9px;padding:7px;text-align:center;font-size:12px;font-weight:800;text-decoration:none}
+nav a.on{background:var(--indigo);border-color:var(--indigo);color:#fff;box-shadow:3px 3px 0 rgba(166,59,50,.7)}
+main{max-width:680px;margin:auto;padding:14px 11px 82px}
+.total{position:sticky;top:108px;z-index:10;display:flex;justify-content:space-between;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:11px;padding:8px 12px;margin-bottom:9px;color:var(--muted);font-size:12px;box-shadow:0 2px 8px rgba(32,43,53,.05)}
+.total strong{color:var(--red);font-size:16px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:15px;margin-bottom:9px;overflow:hidden;box-shadow:2px 2px 0 rgba(35,59,85,.045)}
+summary{list-style:none;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+.stripe{display:block;height:6px;background:repeating-linear-gradient(90deg,var(--mustard) 0 16px,var(--red) 16px 22px,var(--indigo) 22px 29px,var(--paper2) 29px 35px)}
+.sumrow{display:grid;grid-template-columns:57px minmax(0,1fr) 20px;gap:8px;align-items:center;padding:11px 12px 5px}
+.date{font-weight:850;color:var(--red);font-size:16px}
+.title{font-weight:850;font-size:14px;line-height:1.3;min-width:0;overflow-wrap:anywhere}
+.arrow{text-align:center;color:var(--muted);font-size:17px;transition:.15s}
+details[open] .arrow{transform:rotate(180deg)}
+.mini{display:block;color:var(--muted);font-size:12px;line-height:1.45;padding:0 12px 11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+details[open] .mini{display:none}
+.body{padding:0 12px 14px;border-top:1px solid var(--line)}
+label{display:block;font-size:10px;color:var(--red);font-weight:850;letter-spacing:.07em;margin:10px 0 4px}
+textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:9px;background:var(--paper);padding:8px 9px;color:var(--ink);font:inherit;font-size:12.5px;outline:0}
+textarea{min-height:58px;resize:vertical;line-height:1.5}
+textarea:focus,input:focus{border-color:var(--indigo);box-shadow:0 0 0 2px rgba(35,59,85,.07)}
+.warnbox{min-height:62px}
+.note{min-height:70px}
+.money{display:flex;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.money span{padding-left:10px;color:var(--red);font-weight:800}
+.money input{border:0;background:transparent;outline:0;width:100%;padding:9px;font-size:14px}
+.booking summary{display:grid;grid-template-columns:20px minmax(0,1fr) 20px;gap:8px;align-items:center;padding:11px 12px}
+.check{width:18px;height:18px;border:1.5px solid var(--line);border-radius:50%;background:var(--paper)}
+.booking b{display:block;font-size:13px}
+.m{display:block;font-size:11px;color:var(--muted);line-height:1.4}
+.bookbody{padding:0 12px 13px 40px;border-top:1px solid var(--line)}
+.bookbody input{margin-bottom:0}
+.original-tip{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.45;padding:7px 8px;background:var(--paper2);border-radius:8px}
+.section-title{font-size:15px;font-weight:850;color:var(--indigo);margin:18px 2px 9px}
+.footer{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(244,240,229,.96);border-top:1px solid var(--line);padding:7px 12px calc(7px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--muted);font-size:10px}
+@media(max-width:380px){.sumrow{grid-template-columns:53px minmax(0,1fr) 18px}}
+.binfo{display:none;margin-top:3px;font-size:12px;line-height:1.4;color:var(--indigo);font-weight:700;overflow-wrap:anywhere}
+.binfo.on{display:block}.binfo i{font-style:normal;color:var(--red)}.binfo em{font-style:normal;color:var(--muted);font-weight:400}
+details[open] .binfo{display:none}.check.ok{background:var(--red);border-color:var(--red);position:relative}.check.ok:after{content:"✓";position:absolute;inset:0;color:#fff;font-size:11px;line-height:15px;text-align:center}
+nav{grid-template-columns:1fr 1fr 1fr!important}
+.er{display:grid;grid-template-columns:62px 70px minmax(0,1fr) 26px;gap:5px;margin-bottom:6px}
+.er select,.er input{min-width:0;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:9px;padding:8px 6px;font-size:13px;outline:0}
+.ed{border:0;background:none;color:var(--red);font-size:20px;line-height:1}
+.eb{display:flex;justify-content:space-between;align-items:center}.add{border:1px dashed var(--indigo);background:none;color:var(--indigo);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700}
+.eb .sub{font-size:12px;color:var(--red);font-weight:800}
+.st{padding:13px}.st h4{margin:0 0 8px;font-size:13px;color:var(--indigo)}.srow{display:grid;grid-template-columns:38px 1fr auto;gap:8px;align-items:center;font-size:12px;margin-bottom:7px}
+.sbar{height:12px;background:var(--paper);border-radius:6px;overflow:hidden}.sbar i{display:block;height:100%;border-radius:6px}
+.cols{display:flex;align-items:flex-end;gap:4px;height:110px;margin:6px 0 4px}.cols div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:9px;color:var(--muted)}
+.cols i{display:block;width:100%;background:var(--indigo);border-radius:4px 4px 0 0;min-height:2px}.lab{display:flex;gap:4px;font-size:10px;color:var(--muted)}.lab span{flex:1;text-align:center}.none{font-size:12px;color:var(--muted)}
+textarea{min-height:0!important;height:auto;resize:none!important;overflow:hidden;padding:6px 8px!important;font-size:12.5px!important;line-height:1.45!important}
+.body label{margin:8px 0 3px!important}.body{padding-bottom:11px!important}.bookbody textarea{min-height:0}
+main>section{display:none}main>section.show{display:block}body.t1 .total,body.t2 .total{display:none}
+.dbook{display:none;padding:0 12px 10px;font-size:12px;line-height:1.4;color:var(--indigo);font-weight:700}.dbook.on{display:block}details[open] .dbook{display:none}
+.tg{display:grid;grid-template-columns:76px 1fr;gap:6px}.lk{border:1px solid var(--line);border-radius:10px;padding:7px 8px;margin-bottom:6px;background:var(--white)}.lk b{font-size:12px}.lk input,.lk textarea{margin-top:5px}
+.footer{display:flex;gap:8px;justify-content:center;align-items:center;font-size:11px}.footer button{border:1px solid var(--line);background:var(--white);color:var(--indigo);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700}.footer button.rs{color:var(--red)}body{padding-bottom:62px}
+#bk{display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.45);align-items:center;justify-content:center;padding:16px}#bk.on{display:flex}.bkc{background:var(--white);border-radius:14px;padding:14px;width:100%;max-width:480px}.bkc p{margin:0 0 8px;font-size:13px}.bkc textarea{height:180px!important;resize:none!important;overflow:auto!important;font-size:12px!important}.bkc button{margin:8px 8px 0 0;border:0;border-radius:999px;padding:8px 16px;background:var(--indigo);color:#fff;font-weight:700}.bkc button.g{background:var(--paper2);color:var(--ink)}
+#day0 .stripe,#day0::after{background:repeating-linear-gradient(90deg,var(--mustard) 0 16px,var(--red) 16px 22px,var(--indigo) 22px 29px,var(--paper2) 29px 35px)}#day0{border-left:5px solid #a63b32}#day0 .date{color:#a63b32}
+#day1 .stripe,#day1::after{background:repeating-linear-gradient(45deg,var(--red) 0 6px,var(--paper2) 6px 12px)}#day1{border-left:5px solid #a63b32}#day1 .date{color:#a63b32}
+#day2 .stripe,#day2::after{background:repeating-linear-gradient(135deg,var(--indigo) 0 6px,var(--mustard) 6px 12px)}#day2{border-left:5px solid #233b55}#day2 .date{color:#233b55}
+#day3 .stripe,#day3::after{background:radial-gradient(circle at 5px 3px,var(--mustard) 2px,transparent 2.6px) var(--indigo);background-size:10px 6px}#day3{border-left:5px solid #233b55}#day3 .date{color:#233b55}
+#day4 .stripe,#day4::after{background:repeating-linear-gradient(90deg,#536b54 0 10px,var(--paper2) 10px 14px,var(--mustard) 14px 18px,var(--paper2) 18px 22px)}#day4{border-left:5px solid #536b54}#day4 .date{color:#536b54}
+#day5 .stripe,#day5::after{background:radial-gradient(circle at 5px 3px,var(--red) 2px,transparent 2.6px) var(--paper2);background-size:10px 6px}#day5{border-left:5px solid #a63b32}#day5 .date{color:#a63b32}
+#day6 .stripe,#day6::after{background:linear-gradient(90deg,var(--indigo) 50%,var(--red) 50%);background-size:24px 6px}#day6{border-left:5px solid #233b55}#day6 .date{color:#233b55}
+#day7 .stripe,#day7::after{background:repeating-linear-gradient(45deg,#536b54 0 5px,var(--mustard) 5px 10px)}#day7{border-left:5px solid #536b54}#day7 .date{color:#536b54}
+#day8 .stripe,#day8::after{background:repeating-linear-gradient(90deg,var(--mustard) 0 12px,var(--indigo) 12px 16px)}#day8{border-left:5px solid #a97d1f}#day8 .date{color:#a97d1f}
+#day9 .stripe,#day9::after{background:repeating-linear-gradient(90deg,var(--red) 0 8px,#536b54 8px 16px,var(--indigo) 16px 24px)}#day9{border-left:5px solid #7a4b82}#day9 .date{color:#7a4b82}
+details.day::after{content:"";display:block;height:6px}
+.lk1{display:flex;align-items:center;gap:6px;margin-bottom:5px}.lk1 b{flex:none;max-width:46%;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lk1 input{flex:1;min-width:0;padding:6px 8px;font-size:12.5px}
+.dbook.on{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.ph .th{position:relative}.ph .th{aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--paper2)}.ph .th img{width:100%;height:100%;object-fit:cover;display:block}
+
+#pv{display:none;position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.92);flex-direction:column;align-items:center;justify-content:center;padding:12px}#pv.on{display:flex}#pv img{max-width:100%;max-height:62vh;max-width:92%;object-fit:contain;border-radius:6px}#pv div{margin-top:14px;display:flex;gap:10px}#pv button{border:0;border-radius:999px;padding:9px 20px;font-weight:700;background:#fff;color:#222}#pv button.d{background:#a63b32;color:#fff}
+.check{width:22px;height:22px;flex:none}.check.ok{background:#a63b32!important;border-color:#a63b32!important}.check.ok:after{line-height:19px!important;font-size:13px!important}
+#logoBox{width:100%;height:100%;object-fit:cover;border-radius:12px;display:block;overflow:hidden}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="titlearea">
+      <input id="mainTitle" class="edit-title" value="呼和浩特・大同・太原" aria-label="標題">
+      <input id="mainSub" class="subedit" value="10/9 — 10/18　Solo Trip" aria-label="副標題">
+    </div>
+    <div class="mark" aria-label="網站圖標">
+      <img id="logoBox" src="icon-180.png" alt="網站圖標">
+    </div>
+  </div>
+  <nav><a href="#itinerary" class="on">行程</a><a href="#booking">預訂清單</a><a href="#stats">統計</a></nav>
+</header>
+
+<main>
+<section id="itinerary">
+  <div class="total"><span>總花費</span><strong id="total">¥0</strong></div>
+  
+<details class="card day" id="day0">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date0">10/9</span>
+      <span class="title" data-show="title0">廣州→呼和浩特</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan0">廣州白雲機場飛呼和浩特白塔機場，地鐵/機場大巴至新華廣場。入住後適應氣候，晚上逛海亮廣場步行街。</span>
+    <span class="dbook" data-dbook="0"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date0" value="10/9"><input type="text" data-k="title0" value="廣州→呼和浩特（观音寺、宝尔汗佛塔）"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 機票・去程 廣州→呼和浩特</b><input type="text" data-k="booktime0" placeholder="日期／時間"></div>
+            <label>行程</label>
+    <textarea data-k="plan0">09:15 白云T2 飛呼和浩特，入住後適應氣候；觀音寺、寶爾汗佛塔、萬象城，晚上逛宽巷子。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel0">大召寺宽巷子亚朵见野酒店（三晚，共¥980）</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket0">觀音寺、寶爾汗佛塔免費</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport0">打車¥21＋¥9</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food0">晚餐 宽巷子：烧麦配砖茶、羊杂碎、杨老大焙子、沙大熏鸡</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn0" class="warnbox">先補水休息；入住需證件；夜間人多顧好手機錢包；只用正規出租/網約車</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="0"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note0" class="note" placeholder="">观音寺，免费：壮观到起鸡皮疙瘩，千手观音像35.55米大而且精致
+宝尔汗佛塔，免费：世界第一佛塔。当地人会带着佛珠，顺着一个方向绕圈，至少三圈</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="0"></div>
+  </div>
+</details>
+<details class="card day" id="day1">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date1">10/10</span>
+      <span class="title" data-show="title1">內蒙古博物院</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan1">內蒙古博物院（需預約）：恐龍化石與匈奴歷史。</span>
+    <span class="dbook" data-dbook="1"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date1" value="10/10"><input type="text" data-k="title1" value="上午大召寺；下午哈达门森林公園（草原）"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 草原一日團（哈达门）</b><input type="text" data-k="booktime5" placeholder="日期／時間"></div>
+            <label>行程</label>
+    <textarea data-k="plan1">上午大召寺；下午哈达门森林公園直通車，往返車費＋門票＋景區交通共¥98（預約 14:00–18:00）。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel1">同上</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket1">大召寺¥32；哈达门¥98（含往返交通、景區交通）</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport1">哈达门直通車（已含在票價內）</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food1">下午茶：奶皮子、磚茶；晚餐：薛府銅鍋涮羊肉</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn1" class="warnbox">帶防曬、外套、水；拒絕未標價加購</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="1"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note1" class="note" placeholder="">大召寺：明代古寺，因供銀佛得名，看銀佛殿與壁畫
+哈达门森林公園：大青山腳下的森林草原景區，看草原與樹林風光（騎馬等項目另計）</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="1"></div>
+  </div>
+</details>
+<details class="card day" id="day2">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date2">10/11</span>
+      <span class="title" data-show="title2">草原一日團</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan2">參加一天團去草原</span>
+    <span class="dbook" data-dbook="2"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date2" value="10/11"><input type="text" data-k="title2" value="上午禾群市场和內蒙古博物院；下午五塔寺、宽巷子"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 內蒙古博物院</b><input type="text" data-k="booktime4" placeholder="日期／時間"></div>
+            <label>行程</label>
+    <textarea data-k="plan2">上午禾群市场、內蒙古博物院（預約 09:00–12:00，下午4點截止入場）；下午五塔寺、宽巷子。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel2">同上</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket2">博物院免費（需實名預約）</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport2">網約車¥15–30；或地鐵1號線¥2–4</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food2">午餐：格日勒阿媽奶茶館（奶茶、手把肉、炒米）</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn2" class="warnbox">通常週一閉館；預約姓名與證件一致</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="2"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note2" class="note" placeholder="">內蒙古博物院：看恐龍化石與匈奴文物
+五塔寺：清代金剛座舍利寶塔，塔身滿刻小佛像，後壁有蒙文天文圖
+宽巷子：老街小吃與文創</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="2"></div>
+  </div>
+</details>
+<details class="card day" id="day3">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date3">10/12</span>
+      <span class="title" data-show="title3">呼和浩特→大同</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan3">高鐵到大同（1.5–2小時），入住大同古城酒店。</span>
+    <span class="dbook" data-dbook="3"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date3" value="10/12"><input type="text" data-k="title3" value="呼和浩特→大同（法华寺、东南邑文创区）"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 高鐵・呼和浩特→大同</b><input type="text" data-k="booktime2" placeholder="日期／時間"></div>
+            <label>行程</label>
+    <textarea data-k="plan3">11:13 呼和浩特站高鐵到大同（約1.5–2小時），入住全季大同大有广场酒店；法华寺、东南邑文创区。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel3">全季大同大有广场酒店（三晚，共¥844）</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket3">高鐵 呼→同 ¥103.5</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport3">打車¥40；大同南站→市區約25–40分</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food3">午餐：凱琳面館（頭腦面、刀削麵）；晚餐：铜涮牛羊肉火锅</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn3" class="warnbox">12306實名購票；車票、證件、入住姓名一致</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="3"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note3" class="note" placeholder="">法华寺：大同古寺，看殿宇建築
+东南邑文创区：文創街區，逛店、喝咖啡
+晚餐：铜涮牛羊肉火锅</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="3"></div>
+  </div>
+</details>
+<details class="card day" id="day4">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date4">10/13</span>
+      <span class="title" data-show="title4">華嚴寺・九龍壁</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan4">華嚴寺（遼金寺廟群）→ 九龍壁。</span>
+    <span class="dbook" data-dbook="4"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date4" value="10/13"><input type="text" data-k="title4" value="雲岡石窟、善化寺、文庙"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 雲岡石窟</b><input type="text" data-k="booktime6" placeholder="日期／時間"></div>
+        <label>行程</label>
+    <textarea data-k="plan4">雲岡石窟（預約 12:30–14:30，建議3–4小時）→ 善化寺 → 文庙。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel4">同上</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket4">雲岡¥120；善化寺¥38</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport4">古城→雲岡直通車¥20</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food4">午餐：景區文創餐廳或市區；晚餐：帥府街小吃</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn4" class="warnbox">石窟內較暗、階梯多；文庙不错少人，拍建筑很好</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="4"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note4" class="note" placeholder="">雲岡石窟：北魏開鑿的大型石窟，看第20窟露天大佛、五華洞、第6窟佛傳故事雕刻
+善化寺：遼金時期木構古建築，看大雄寶殿
+文庙：不错少人，拍建筑很好</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="4"></div>
+  </div>
+</details>
+<details class="card day" id="day5">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date5">10/14</span>
+      <span class="title" data-show="title5">雲岡石窟</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan5">雲岡石窟（世界文化遺產），建議3–4小時。</span>
+    <span class="dbook" data-dbook="5"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date5" value="10/14"><input type="text" data-k="title5" value="懸空寺・渾源"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 懸空寺</b><input type="text" data-k="booktime7" placeholder="日期／時間"></div>
+            <label>行程</label>
+    <textarea data-k="plan5">大同乘「晋游宝景区直通车」到渾源：懸空寺＋渾源市區（預約時段待補）。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel5">同上</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket5">首道門票¥15；登臨¥100；永安寺¥20；圓覺寺磚塔免費（實際門票未記錄）</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport5">大→恒直通車¥39</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food5">午餐：渾源涼粉、大同合笙财冰面包</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn5" class="warnbox">「北岳云游」小程序分時預約；恐高者可看外觀；雨雪大風限流</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="5"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note5" class="note" placeholder="">懸空寺：建在恆山金龍峽崖壁上，佛道儒三教合一，看棧道與插入岩壁的木樑
+渾源：永安寺（元代壁畫）、圓覺寺磚塔</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="5"></div>
+  </div>
+</details>
+<details class="card day" id="day6">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date6">10/15</span>
+      <span class="title" data-show="title6">懸空寺・渾源</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan6">懸空寺（需預約）＋ 渾源市區。</span>
+    <span class="dbook" data-dbook="6"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date6" value="10/15"><input type="text" data-k="title6" value="大同→太原、山西博物院"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 高鐵・大同→太原</b><input type="text" data-k="booktime3" placeholder="日期／時間"></div><div class="lk1"><b>🎫 山西博物院</b><input type="text" data-k="booktime9" placeholder="日期／時間"></div>
+            <label>行程</label>
+    <textarea data-k="plan6">10:06 大同南站高鐵到太原南站（約2小時），入住太原凯悦嘉轩酒店；下午山西博物院（預約 12:30–14:00）。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel6">太原凯悦嘉轩酒店（一晚，¥312）</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket6">山西博物院免費；高鐵 大→太 ¥122</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport6">太原南站→酒店¥25–45</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food6">午餐：赵大蒸羊肉；晚餐：郝剛剛羊雜割</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn6" class="warnbox">轉乘多，預留1.5–2小時緩衝；確認行李寄存</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="6"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note6" class="note" placeholder="">山西博物院：看晉侯鳥尊、晉國青銅器
+高鐵途中預留緩衝，行李先寄存</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="6"></div>
+  </div>
+</details>
+<details class="card day" id="day7">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date7">10/16</span>
+      <span class="title" data-show="title7">大同→應縣→太原</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan7">大同南站→應縣木塔→高鐵到太原南站（約2小時），入住太原柳巷周邊。</span>
+    <span class="dbook" data-dbook="7"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date7" value="10/16"><input type="text" data-k="title7" value="鼓楼、文殊寺、迎泽公园"></div>
+        <label>行程</label>
+    <textarea data-k="plan7">迎泽公园、鼓楼、崇善寺、纯阳宫、文殊寺、普光寺</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel7">10/16 起兩晚共¥479（酒店名待補）</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket7"></textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport7"></textarea>
+
+    <label>美食</label>
+    <textarea data-k="food7">清和元头脑</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn7" class="warnbox"></textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="7"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note7" class="note" placeholder="">迎泽公园：太原大公園，看湖景與步道
+鼓楼：城中老地標
+崇善寺、纯阳宫、文殊寺、普光寺：古寺與道教建築群</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="7"></div>
+  </div>
+</details>
+<details class="card day" id="day8">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date8">10/17</span>
+      <span class="title" data-show="title8">山西博物院・鐘樓街</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan8">山西博物院（鳥尊、晉國青銅器）→ 傍晚鐘樓街、柳巷步行街。</span>
+    <span class="dbook" data-dbook="8"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date8" value="10/17"><input type="text" data-k="title8" value="太原北齐壁画博物馆、壁画体验、圆照寺"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 北齐壁画博物馆</b><input type="text" data-k="booktime11" placeholder="日期／時間"></div>
+        <label>行程</label>
+    <textarea data-k="plan8">北齐壁画博物馆、壁画體驗、圆照寺。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel8">同上</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket8">北齐壁画博物馆¥35</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport8">網約車¥20–35；地鐵2號線¥3–6</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food8">晚餐：六味齋醬肉、乾煸貓耳朵、頭腦</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn8" class="warnbox">夜間注意防盜、排隊</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="8"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note8" class="note" placeholder="">北齐壁画博物馆：看北齊墓室壁畫（婁睿墓、徐顯秀墓等）與壁畫體驗
+圆照寺：古寺，安靜好逛</textarea>
+    <label>📷 照片</label><div class="ph" data-ph="8"></div>
+  </div>
+</details>
+<details class="card day" id="day9">
+  <summary>
+    <span class="stripe"></span>
+    <span class="sumrow">
+      <span class="date" data-show="date9">10/18</span>
+      <span class="title" data-show="title9">太原→廣州</span>
+      <span class="arrow">⌄</span>
+    </span>
+    <span class="mini" data-show="plan9">收拾行李，前往太原武宿機場，飛返廣州。</span>
+    <span class="dbook" data-dbook="9"></span>
+  </summary>
+  <div class="body">
+    <label>日期／標題</label><div class="tg"><input type="text" data-k="date9" value="10/18"><input type="text" data-k="title9" value="太原→廣州"></div>
+    <label>預約（與預訂清單同步）</label><div class="lk1"><b>🎫 機票・回程 太原→廣州</b><input type="text" data-k="booktime1" placeholder="日期／時間"></div>
+            <label>行程</label>
+    <textarea data-k="plan9">12:00 太原T2 飛返廣州；收拾行李，至少提前2小時到機場。</textarea>
+
+    <label>住宿</label>
+    <textarea data-k="hotel9">—</textarea>
+
+    <label>門票</label>
+    <textarea data-k="ticket9">機場大巴¥20–30；網約車¥50–80</textarea>
+
+    <label>交通</label>
+    <textarea data-k="transport9">大巴約45–70分；網約車約40–60分</textarea>
+
+    <label>美食</label>
+    <textarea data-k="food9">機場簡易餐飲</textarea>
+
+    <label>提示</label>
+    <textarea data-k="warn9" class="warnbox">確認航站樓、行李額、值機截止；保留電子行程單；液體、充電寶依規定</textarea>
+
+    <label>實際花費（RMB）</label>
+    <div class="exp" data-day="9"></div>
+
+    <label>紀錄／筆記</label>
+    <textarea data-k="note9" class="note" placeholder=""></textarea>
+    <label>📷 照片</label><div class="ph" data-ph="9"></div>
+  </div>
+</details>
+</section>
+
+<section id="booking">
+  <div class="section-title">預訂清單</div>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book0">機票・去程 廣州→呼和浩特</b>
+      <span class="m">提前2–6週｜航空App/攜程</span>
+      <span class="binfo" data-bi="0"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime0" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote0"></textarea>
+    <div class="original-tip">核對行李額、航站樓</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book1">機票・回程 太原→廣州</b>
+      <span class="m">提前2–6週｜航空App/攜程</span>
+      <span class="binfo" data-bi="1"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime1" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote1"></textarea>
+    <div class="original-tip">核對行李額、航站樓</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book2">高鐵・呼和浩特→大同</b>
+      <span class="m">提前15天｜12306</span>
+      <span class="binfo" data-bi="2"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime2" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote2"></textarea>
+    <div class="original-tip">實名購票、預留轉乘緩衝</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book3">高鐵・大同→太原</b>
+      <span class="m">提前15天｜12306</span>
+      <span class="binfo" data-bi="3"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime3" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote3"></textarea>
+    <div class="original-tip">實名購票、預留轉乘緩衝</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book4">內蒙古博物院</b>
+      <span class="m">提前7天｜官方微信</span>
+      <span class="binfo" data-bi="4"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime4" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote4"></textarea>
+    <div class="original-tip">免費預約，週一閉館</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book5">草原一日團（哈达门）</b>
+      <span class="m">提前1–3天｜哈达门森林公園</span>
+      <span class="binfo" data-bi="5"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime5" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote5"></textarea>
+    <div class="original-tip">確認集合點、自費項目</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book6">雲岡石窟</b>
+      <span class="m">提前1–7天｜云冈研究院小程序</span>
+      <span class="binfo" data-bi="6"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime6" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote6"></textarea>
+    <div class="original-tip">分時預約</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book7">懸空寺</b>
+      <span class="m">前一日起留意｜北岳云游小程序</span>
+      <span class="binfo" data-bi="7"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime7" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote7"></textarea>
+    <div class="original-tip">登臨費另計</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book8">晉祠博物館</b>
+      <span class="m">提前數日｜晉祠官方微信</span>
+      <span class="binfo" data-bi="8"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime8" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote8"></textarea>
+    <div class="original-tip">實名分時預約</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book9">山西博物院</b>
+      <span class="m">提前3天｜官方微信</span>
+      <span class="binfo" data-bi="9"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime9" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote9"></textarea>
+    <div class="original-tip">免費預約，週一閉館</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book11">北齐壁画博物馆</b>
+      <span class="m">提前數日｜官方微信</span>
+      <span class="binfo" data-bi="11"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime11" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote11"></textarea>
+    <div class="original-tip">需提前預約，以官方公告為準</div>
+  </div>
+</details>
+<details class="card booking">
+  <summary>
+    <span class="check"></span>
+    <span>
+      <b data-show="book10">證件與健康</b>
+      <span class="m">出發前一週｜—</span>
+      <span class="binfo" data-bi="10"></span>
+    </span>
+    <span class="arrow">⌄</span>
+  </summary>
+  <div class="bookbody">
+    <label>日期／時間</label>
+    <input type="text" data-k="booktime10" placeholder="">
+    <label>備註</label>
+    <textarea data-k="booknote10"></textarea>
+    <div class="original-tip">證件與訂票一致；防曬保暖</div>
+  </div>
+</details>
+</section>
+<section id="stats"><div class="section-title">花費統計</div><div class="card st" id="statsBox"></div></section>
+</main>
+
+<div class="footer"><button id="fb">備份</button><button id="fz" class="rs">重置</button></div>
+<div id="bk"><div class="bkc"><p id="bkp"></p><textarea id="bkt"></textarea><button id="bkok">複製</button><button id="bkx" class="g">關閉</button></div></div>
+
+<script>
+(function(){
+ const KEY='woo_trip_v6';
+ let S={};
+ try{S=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){S={}}
+ const SEED0={"exp": {"0": [{"c": "交通", "a": "120", "n": "南航积分10100"}, {"c": "住宿", "a": "980", "n": "三晚"}, {"c": "交通", "a": "30", "n": ""}, {"c": "餐飲", "a": "117", "n": ""}], "1": [{"c": "門票", "a": "98", "n": "哈达门（往返交通、门票、景交）"}, {"c": "門票", "a": "32", "n": "大召寺"}, {"c": "餐飲", "a": "57", "n": ""}], "2": [{"c": "餐飲", "a": "50", "n": ""}, {"c": "交通", "a": "35", "n": ""}], "3": [{"c": "住宿", "a": "844", "n": "三晚"}, {"c": "交通", "a": "103.5", "n": "高铁呼-大"}, {"c": "餐飲", "a": "120", "n": ""}, {"c": "交通", "a": "40", "n": "打车"}], "4": [{"c": "門票", "a": "120", "n": "云岗门票"}, {"c": "交通", "a": "20", "n": "大同-云岗直通车"}, {"c": "門票", "a": "38", "n": "善化寺"}, {"c": "餐飲", "a": "45", "n": ""}], "5": [{"c": "交通", "a": "39", "n": "大-恒直通车"}, {"c": "餐飲", "a": "50", "n": ""}], "6": [{"c": "住宿", "a": "312", "n": "一晚"}, {"c": "交通", "a": "122", "n": "大-太"}, {"c": "餐飲", "a": "50", "n": ""}], "7": [{"c": "住宿", "a": "479", "n": "两晚"}, {"c": "餐飲", "a": "45", "n": ""}], "8": [{"c": "門票", "a": "35", "n": "北齐壁画博物馆"}], "9": [{"c": "交通", "a": "120", "n": "南航积分12000"}]}, "booktime0": "10/9 09:15 白云T2", "booknote0": "南航積分兌換", "booktime1": "10/18 12:00 太原T2", "booknote1": "南航積分兌換", "booktime2": "10/12 11:13 呼和浩特站", "booknote2": "¥103.5", "booktime3": "10/15 10:06", "booknote3": "¥122", "booktime4": "10/11 09:00–12:00", "booknote4": "免費預約", "booktime5": "10/10 14:00–18:00", "booknote5": "往返＋門票＋景區交通 ¥98", "booktime6": "10/13 12:30–14:30", "booknote6": "門票¥120＋直通車¥20", "booktime7": "10/14 時段待補", "booknote7": "大→恒直通車¥39；門票未記錄", "booktime9": "10/15 12:30–14:00", "booktime11": "10/17 時段待補", "booknote11": "門票¥35", "booknote9": "免費預約"};
+ if(!Object.keys(S).length){S=JSON.parse(JSON.stringify(SEED0));try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+ else{let ch=0;Object.keys(SEED0).forEach(k=>{if(/^book(time|note)\d+$/.test(k)&&S[k]===undefined){S[k]=SEED0[k];ch=1}});if(ch)try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+ // 10/9：只清除兩筆花費的備註，保留金額與分類；同時修正舊版本機已保存的資料
+ if(Array.isArray(S.exp && S.exp[0])){
+   S.exp[0].forEach(function(x){
+     if((String(x.a)==='30' && x.c==='交通') || (String(x.a)==='117' && x.c==='餐飲')) x.n='';
+   });
+   try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+ }
+ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+ const totalEl=document.getElementById('total');
+
+ function setValue(el,k,defaultValue=''){
+   el.value = S[k] !== undefined ? S[k] : defaultValue;
+ }
+ const CATS=[['交通','#233b55'],['餐飲','#a63b32'],['門票','#c69a3b'],['住宿','#536b54'],['購物','#8a5a8c'],['其他','#8b8f8a']];
+ S.exp=S.exp||{};
+ for(let i=0;i<10;i++){const o=S['spend'+i];if(o&&!S.exp[i]&&Number(o))S.exp[i]=[{c:'其他',a:Number(o),n:'原有紀錄'}]}
+ const esc2=x=>String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+ const sumDay=i=>(S.exp[i]||[]).reduce((a,x)=>a+(Number(x.a)||0),0);
+ function renderExp(i){
+   const box=document.querySelector('.exp[data-day="'+i+'"]'),list=S.exp[i]||[];
+   box.innerHTML=list.map(x=>'<div class="er"><select class="ec">'+CATS.map(c=>'<option'+(c[0]===x.c?' selected':'')+'>'+c[0]+'</option>').join('')+'</select><input class="ea" type="number" inputmode="decimal" min="0" placeholder="金額" value="'+esc2(x.a)+'"><input class="en" type="text" placeholder="備註" value="'+esc2(x.n||'')+'"><button class="ed" type="button" aria-label="刪除">×</button></div>').join('')+'<div class="eb"><button class="add" type="button">＋ 新增花費</button><span class="sub">本日 ¥'+sumDay(i)+'</span></div>';
+ }
+ function refreshTotal(){
+   let n=0;const cs={};CATS.forEach(c=>cs[c[0]]=0);const ds=[];
+   for(let i=0;i<10;i++){const d=sumDay(i);ds.push(d);n+=d;(S.exp[i]||[]).forEach(x=>{cs[x.c]=(cs[x.c]||0)+(Number(x.a)||0)})}
+   totalEl.textContent='¥'+n.toLocaleString('zh-CN');S.total=n;save();
+   const box=document.getElementById('statsBox');
+   if(!n){box.innerHTML='<div class="none">還沒有花費紀錄。在每天行程裡按「＋ 新增花費」開始記。</div>';return}
+   const mx=Math.max(...ds);
+   box.innerHTML='<h4>按類別（共 ¥'+n.toLocaleString('zh-CN')+'）</h4>'+CATS.filter(c=>cs[c[0]]>0).map(c=>'<div class="srow"><span>'+c[0]+'</span><div class="sbar"><i style="width:'+(cs[c[0]]/n*100).toFixed(1)+'%;background:'+c[1]+'"></i></div><span>¥'+cs[c[0]]+'・'+Math.round(cs[c[0]]/n*100)+'%</span></div>').join('')
+   +'<h4 style="margin-top:14px">每日花費</h4><div class="cols">'+ds.map(d=>'<div>'+(d?d:'')+'<i style="height:'+(mx?d/mx*85:0)+'%"></i></div>').join('')+'</div><div class="lab">'+ds.map((_,i)=>'<span>'+(9+i)+'</span>').join('')+'</div>';
+ }
+ document.querySelectorAll('.exp').forEach(box=>{
+   const i=box.dataset.day,idx=e=>[...box.querySelectorAll('.er')].indexOf(e.target.closest('.er'));
+   box.addEventListener('input',e=>{const j=idx(e);if(j<0)return;const x=S.exp[i][j];
+     if(e.target.classList.contains('ea')){x.a=e.target.value;box.querySelector('.sub').textContent='本日 ¥'+sumDay(i)}
+     else if(e.target.classList.contains('en'))x.n=e.target.value;
+     save();refreshTotal()});
+   box.addEventListener('change',e=>{const j=idx(e);if(j>=0&&e.target.classList.contains('ec')){S.exp[i][j].c=e.target.value;save();refreshTotal()}});
+   box.addEventListener('click',e=>{
+     if(e.target.classList.contains('add')){(S.exp[i]=S.exp[i]||[]).push({c:'餐飲',a:'',n:''});save();renderExp(i)}
+     else if(e.target.classList.contains('ed')){const j=idx(e);if(j>=0){S.exp[i].splice(j,1);save();renderExp(i);refreshTotal()}}});
+   renderExp(i);
+ });
+ if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+
+ // Restore editable fields.
+ if(typeof S.mainSub==='string'&&/TRAVEL NOTES/i.test(S.mainSub)){S.mainSub=S.mainSub.replace(/TRAVEL NOTES/i,'Solo Trip');save()}
+ setValue(document.getElementById('mainTitle'),'mainTitle','呼和浩特・大同・太原');
+ setValue(document.getElementById('mainSub'),'mainSub','10/9 — 10/18　Solo Trip');
+
+ document.querySelectorAll('[data-k]').forEach(el=>{
+   const k=el.dataset.k;
+   if(S[k]!==undefined) el.value=S[k];
+ });
+
+ // Update the compact summaries from edited daily content.
+ function syncDay(i){
+   const plan=document.querySelector('[data-k="plan'+i+'"]');
+   const mini=document.querySelector('[data-show="plan'+i+'"]');
+   if(plan && mini) mini.textContent=plan.value;
+ }
+
+ for(let i=0;i<10;i++) syncDay(i);
+ function syncBook(i){
+   var t=(document.querySelector('[data-k="booktime'+i+'"]')||{}).value||'',nt=((document.querySelector('[data-k="booknote'+i+'"]')||{}).value||'').trim();
+   var el=document.querySelector('[data-bi="'+i+'"]');if(!el)return;
+   var h='';if(t.trim())h+='<i>📅 '+esc2(t.trim())+'</i>';if(nt)h+=(h?'　':'')+'<em>'+esc2(nt.split('\n')[0])+'</em>';
+   el.innerHTML=h;el.classList.toggle('on',!!h);
+   var c=el.closest('summary').querySelector('.check');c.classList.toggle('ok',isDone(i));
+ }
+ for(let i=0;i<12;i++) syncBook(i);
+
+
+ document.querySelectorAll('[data-k]').forEach(el=>{
+   el.addEventListener('input',()=>{
+     const k=el.dataset.k;S[k]=el.value;save();
+     document.querySelectorAll('[data-k="'+k+'"]').forEach(o=>{if(o!==el){o.value=el.value;if(o.tagName==='TEXTAREA'&&o.offsetParent!==null){o.rows=1;o.style.height='auto';o.style.height=(o.scrollHeight+2)+'px'}}});
+     document.querySelectorAll('[data-show="'+k+'"]').forEach(x=>x.textContent=el.value);
+     const bm=k.match(/^book(?:time|note)(\d+)$/);if(bm){syncBook(bm[1]);syncDayBook()}
+   });
+ });
+
+ document.getElementById('mainTitle').addEventListener('input',e=>{S.mainTitle=e.target.value;save()});
+ document.getElementById('mainSub').addEventListener('input',e=>{S.mainSub=e.target.value;save()});
+
+
+
+ (function(){
+   var links=document.querySelectorAll('nav a'),bk=document.getElementById('booking'),hd=document.querySelector('header');
+   var ids=['itinerary','booking','stats'],secs=ids.map(function(id){return document.getElementById(id)});
+   function fit(t){t.rows=1;t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px'}
+   function fitAll(root){(root||document).querySelectorAll('textarea').forEach(function(t){if(t.offsetParent!==null)fit(t)})}
+   function show(i,noScroll){
+     secs.forEach(function(el,k){el.classList.toggle('show',k===i)});
+     links.forEach(function(l,k){l.classList.toggle('on',k===i)});
+     document.body.className='t'+i;try{localStorage.setItem('woo_tab',i)}catch(e){}
+     fitAll(secs[i]);if(!noScroll)window.scrollTo(0,0);
+   }
+   links.forEach(function(a,i){a.addEventListener('click',function(e){e.preventDefault();show(i)})});
+   document.addEventListener('input',function(e){if(e.target.tagName==='TEXTAREA')fit(e.target)});
+   document.querySelectorAll('details').forEach(function(d){d.addEventListener('toggle',function(){if(d.open)fitAll(d)})});
+   function sticky(){var t=document.querySelector('.total');if(t)t.style.top=(hd.offsetHeight+6)+'px'}
+   window.addEventListener('resize',sticky);sticky();
+   var t0=0;try{t0=+localStorage.getItem('woo_tab')||0}catch(e){}show(t0>2?0:t0,true);
+ })();
+
+ document.querySelectorAll('[data-show]').forEach(x=>{const e=document.querySelector('[data-k="'+x.dataset.show+'"]');if(e)x.textContent=e.value});
+ const LK=[[0], [5], [4], [2], [6], [7], [3, 9], [], [11], [1]],BN=["機票・去程 廣州→呼和浩特", "機票・回程 太原→廣州", "高鐵・呼和浩特→大同", "高鐵・大同→太原", "內蒙古博物院", "草原一日團（哈达门）", "雲岡石窟", "懸空寺", "晉祠博物館", "山西博物院", "證件與健康", "北齐壁画博物馆"];
+ function isDone(b){const v=S['bookdone'+b];if(v!==undefined)return !!v;const t=(S['booktime'+b]||'').trim();return !!t}
+ document.querySelectorAll('#booking summary .check').forEach((c,n)=>{
+   const det=c.closest('details'),bi=det.querySelector('[data-bi]').dataset.bi;
+   c.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();S['bookdone'+bi]=!isDone(bi);save();syncBook(bi);syncDayBook()});
+ });
+ function syncDayBook(){LK.forEach((arr,i)=>{const el=document.querySelector('[data-dbook="'+i+'"]');if(!el)return;const h=arr.map(b=>{const t=(S['booktime'+b]||'').trim();return t?(isDone(b)?'✅ ':'🎫 ')+esc2(BN[b])+' '+esc2(t):''}).filter(Boolean).join('　');el.innerHTML=h;el.classList.toggle('on',!!h)})}
+ syncDayBook();
+ const bk=document.getElementById('bk'),bkt=document.getElementById('bkt');
+ const V=k=>{const e=document.querySelector('[data-k="'+k+'"]');return e?e.value:''};
+ const Q=x=>'"'+String(x==null?'':x).replace(/"/g,'""')+'"';
+ function buildCsv(){
+   const R=[];let tot=0;
+   R.push(['【每日行程】']);
+   R.push(['日期','標題','行程','住宿','門票','交通','美食','提示','預約','本日花費(RMB)','筆記']);
+   for(let i=0;i<10;i++){const d=sumDay(i);tot+=d;
+     const bs=LK[i].map(b=>{const t=V('booktime'+b),n=V('booknote'+b);return (t||n)?BN[b]+'：'+t+(n?' '+n:''):''}).filter(Boolean).join('；');
+     R.push([V('date'+i),V('title'+i),V('plan'+i),V('hotel'+i),V('ticket'+i),V('transport'+i),V('food'+i),V('warn'+i),bs,d,V('note'+i)])}
+   R.push(['總花費','','','','','','','','',tot,'']);R.push([]);
+   R.push(['【花費明細】']);R.push(['日期','類別','金額(RMB)','備註']);
+   for(let i=0;i<10;i++)(S.exp[i]||[]).forEach(x=>{if(x.a!==''||x.n)R.push([V('date'+i),x.c,x.a,x.n])});
+   R.push([]);R.push(['【類別統計】']);R.push(['類別','金額(RMB)','佔比']);
+   CATS.forEach(c=>{let m=0;for(let i=0;i<10;i++)(S.exp[i]||[]).forEach(x=>{if(x.c===c[0])m+=Number(x.a)||0});if(m)R.push([c[0],m,tot?Math.round(m/tot*100)+'%':''])});
+   R.push([]);R.push(['【預訂清單】']);R.push(['項目','已預約','日期／時間','備註']);
+   BN.forEach((n,b)=>{const t=V('booktime'+b);R.push([n,t.trim()?'是':'否',t,V('booknote'+b)])});
+   return R.map(r=>r.map(Q).join(',')).join('\r\n');
+ }
+ document.getElementById('fb').onclick=()=>{
+   const csv=buildCsv();
+   try{const u=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='行程備份.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000)}catch(e){}
+   document.getElementById('bkp').textContent='已匯出「行程備份.csv」，用 Excel 或 WPS 開啟。如果沒有下載，可複製下面內容貼到備忘錄。';bkt.value=csv;bk.classList.add('on');
+ };
+ document.getElementById('bkx').onclick=()=>bk.classList.remove('on');
+ document.getElementById('bkok').onclick=()=>{bkt.select();try{document.execCommand('copy');alert('已複製')}catch(e){try{navigator.clipboard.writeText(bkt.value);alert('已複製')}catch(x){}}};
+ document.getElementById('fz').onclick=()=>{if(confirm('清除所有紀錄與修改？建議先備份。')){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}};
+ refreshTotal();
+})();
+</script>
+<div id="pv"><img id="pvi" alt="照片預覽"><div><button id="pvx">關閉</button></div></div>
+<script>
+/*
+ * 公開照片資料夾（所有訪客會看到相同照片）：
+ * photos/10-9/01.jpg、photos/10-9/02.jpg……
+ * 資料夾名稱會依照每一天行程卡片中的日期欄位自動決定。
+ * 每天自動檢查 20 張 JPG；不存在的照片會隱藏。
+ */
+(function(){
+  function getFolder(day){
+    var dateEl = document.querySelector('[data-k="date' + day + '"]');
+    var date = dateEl ? dateEl.value.trim() : '';
+    var m = date.match(/(\d{1,2})\s*[\/.-]\s*(\d{1,2})/);
+    if (m) return String(parseInt(m[1],10)) + '-' + String(parseInt(m[2],10));
+    return date.replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+  function showPreview(src){
+    document.getElementById('pvi').src = src;
+    document.getElementById('pv').classList.add('on');
+  }
+  function render(box){
+    var day = Number(box.dataset.ph);
+    var folder = getFolder(day);
+    if (!folder) {
+      box.innerHTML = '<div style="font-size:12px;color:var(--muted)">請先填寫日期</div>';
+      return;
+    }
+    var markup = '';
+    for (var i=1; i<=20; i++){
+      var num = String(i).padStart(2,'0');
+      var src = 'photos/' + folder + '/' + num + '.jpg';
+      markup += '<div class="th"><img loading="lazy" src="' + src + '" alt="照片 ' + num + '" onerror="this.parentNode.remove()"></div>';
+    }
+    box.innerHTML = markup;
+    box.querySelectorAll('.th img').forEach(function(img){
+      img.addEventListener('click',function(){showPreview(img.src);});
+    });
+  }
+  document.querySelectorAll('.ph').forEach(render);
+  document.getElementById('pvx').onclick = function(){
+    document.getElementById('pv').classList.remove('on');
+    document.getElementById('pvi').src = '';
+  };
+  document.getElementById('pv').addEventListener('click',function(e){
+    if(e.target.id==='pv') document.getElementById('pvx').click();
+  });
+})();
+</script>
+</body>
+</html>
